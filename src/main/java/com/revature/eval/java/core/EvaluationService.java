@@ -30,8 +30,11 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String acronym(String phrase) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		String ret = "";
+		
+		ret += phrase.concat(toCharArray()[0]);
+		
+		return ret;
 	}
 
 	/**
