@@ -52,16 +52,25 @@ public class EvaluationService {
 		private double sideOne;
 		private double sideTwo;
 		private double sideThree;
+		
+		int comp12;
+		int comp13;
+		int comp23;
 
 		public Triangle() {
 			super();
 		}
 
 		public Triangle(double sideOne, double sideTwo, double sideThree) {
-			this();
+			// the first line of every constructor is super() or this(), it calls super() implicitly unless we call 
+			//this() explicitly
+			this(); //refering to the constructor on line 56
 			this.sideOne = sideOne;
 			this.sideTwo = sideTwo;
 			this.sideThree = sideThree;
+			this.comp12 = Double.compare(sideOne, sideTwo);
+			this.comp13 = Double.compare(sideOne, sideThree);
+			this.comp23 = Double.compare(sideTwo, sideThree);
 		}
 
 		public double getSideOne() {
@@ -88,29 +97,22 @@ public class EvaluationService {
 			this.sideThree = sideThree;
 		}
 		
-		int comp12 = Double.compare(sideOne, sideTwo);
-		int comp13 = Double.compare(sideOne, sideThree);
-		int comp23 = Double.compare( sideTwo, sideThree);
+
+		
 
 		public boolean isEquilateral() {
-			if (comp12 == 0 && comp23 == 0)
-				return true;
-			else
-				return false;
+			
+			return (comp12 == comp23);
 		}
 
 		public boolean isIsosceles() {
-			if (comp12 == 0 || comp23 == 0 || comp13 == 0)
-				return true;
-			else
-				return false;
+			
+			return (comp12 == 0 || comp23 == 0 || comp13 == 0);
 		}
 
 		public boolean isScalene() {
-			if (comp12 != 0 && comp23 != 0 && comp13 != 0)
-				return true;
-			else
-				return false;
+			
+			return (comp12 != 0 && comp23 != 0 && comp13 != 0);
 		}
 	}
 
@@ -227,16 +229,12 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Map<String, Integer> wordCount(String string) {
-		int place = 0;
+		
 		String[] words = string.split(" ");
-		int[] count;
+		int[] hash = new int[words.length];
 		
-		
-		for (int i = 0; i < string.length(); i++) {
-			if (place == 0) {
-				
-			}
-				
+		for (int i = 0; i < words.length; i++) {
+			
 		}
 			
 		
@@ -625,7 +623,6 @@ public class EvaluationService {
 			for (int i = 0; i < len - 1; i++) {
 				words[5] += temp[i];
 			}
-			
 		}
 		
 		if (words.length == 5) {
@@ -636,8 +633,6 @@ public class EvaluationService {
 				words[4] += temp2[i];
 			}
 		}
-		
-		System.out.println(words[5]);
 		
 		switch (words[3]) {
 		case "plus":
@@ -653,7 +648,6 @@ public class EvaluationService {
 		case "multiplied":
 			x = Integer.parseInt(words[2]);
 			y = Integer.parseInt(words[5]);
-			System.out.println(y);
 			answer += x * y;
 			break;
 		case "divided":
@@ -662,8 +656,6 @@ public class EvaluationService {
 			answer += x / y;
 			break;
 		}
-		
-		System.out.println(answer);
 		
 		return answer;
 	}
