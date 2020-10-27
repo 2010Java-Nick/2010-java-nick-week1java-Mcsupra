@@ -30,11 +30,13 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String acronym(String phrase) {
-		String ret = "";
+		String[] words = phrase.split(" ");
+		String acro = "";
 		
-		ret += phrase.concat(toCharArray()[0]);
-		
-		return ret;
+		for (int i = 0; i < words.length; i++) {
+			acro += words[i].toCharArray()[0];
+		}	
+		return acro;
 	}
 
 	/**
@@ -85,22 +87,31 @@ public class EvaluationService {
 		public void setSideThree(double sideThree) {
 			this.sideThree = sideThree;
 		}
+		
+		int comp12 = Double.compare(sideOne, sideTwo);
+		int comp13 = Double.compare(sideOne, sideThree);
+		int comp23 = Double.compare( sideTwo, sideThree);
 
 		public boolean isEquilateral() {
-			// TODO Write an implementation for this method declaration
-			return false;
+			if (comp12 == 0 && comp23 == 0)
+				return true;
+			else
+				return false;
 		}
 
 		public boolean isIsosceles() {
-			// TODO Write an implementation for this method declaration
-			return false;
+			if (comp12 == 0 || comp23 == 0 || comp13 == 0)
+				return true;
+			else
+				return false;
 		}
 
 		public boolean isScalene() {
-			// TODO Write an implementation for this method declaration
-			return false;
+			if (comp12 != 0 && comp23 != 0 && comp13 != 0)
+				return true;
+			else
+				return false;
 		}
-
 	}
 
 	/**
@@ -119,8 +130,37 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int getScrabbleScore(String string) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		string = string.toUpperCase();
+		char[] scrabble = string.toCharArray();
+		int score = 0;
+		
+		for (int i = 0; i < string.length(); i++) {
+			switch (scrabble[i]) {
+			case 'A': case 'E': case 'I': case 'O': case 'U': case 'L': case 'N': case 'R': case 'S': case 'T':
+				score += 1;
+				break;
+			case 'D': case 'G':
+				score += 2;
+				break;
+			case 'B': case 'C': case 'M': case 'P':
+				score += 3;
+				break;
+			case 'F': case 'H': case 'V': case 'W': case 'Y':
+				score += 4;
+				break;
+			case 'K':
+				score += 5;
+				break;
+			case 'J': case 'X':
+				score += 8;
+				break;
+			case 'Q': case 'Z':
+				score += 10;
+				break;
+			}
+		}
+		
+		return score;
 	}
 
 	/**
@@ -155,8 +195,26 @@ public class EvaluationService {
 	 * NANP-countries, only 1 is considered a valid country code.
 	 */
 	public String cleanPhoneNumber(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		int count = 0;
+		String newNum = "";
+		char[] phone = string.toCharArray();
+		
+		for (int i = 0; i < string.length(); i++) {
+			if (Character.isDigit(phone[i])) {
+				if (count == 0 && phone[i] != '1') {
+					newNum += phone[i];
+					count++;
+				}
+				else if (count == 0 && phone[i] == '1')
+					count++;
+				else
+					newNum += phone[i];
+					count++;		
+			}
+			
+		}
+		
+		return newNum;
 	}
 
 	/**
@@ -169,7 +227,20 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Map<String, Integer> wordCount(String string) {
-		// TODO Write an implementation for this method declaration
+		int place = 0;
+		String[] words = string.split(" ");
+		int[] count;
+		
+		
+		for (int i = 0; i < string.length(); i++) {
+			if (place == 0) {
+				
+			}
+				
+		}
+			
+		
+		
 		return null;
 	}
 
@@ -540,8 +611,61 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int solveWordProblem(String string) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		
+		int answer = 0;
+		String[] words = string.split(" ");
+		int x;
+		int y;
+		int len;
+		
+		if (words.length == 6) {
+			char[] temp = words[5].toCharArray();
+			len = words[5].length();
+			words[5] = "";
+			for (int i = 0; i < len - 1; i++) {
+				words[5] += temp[i];
+			}
+			
+		}
+		
+		if (words.length == 5) {
+			char[] temp2 = words[4].toCharArray();
+			len = words[4].length();
+			words[4] = "";
+			for (int i = 0; i < len - 1; i++) {
+				words[4] += temp2[i];
+			}
+		}
+		
+		System.out.println(words[5]);
+		
+		switch (words[3]) {
+		case "plus":
+			x = Integer.parseInt(words[2]);
+			y = Integer.parseInt(words[4]);
+			answer += x + y;
+			break;
+		case "minus":
+			x = Integer.parseInt(words[2]);
+			y = Integer.parseInt(words[4]);
+			answer += x - y;
+			break;
+		case "multiplied":
+			x = Integer.parseInt(words[2]);
+			y = Integer.parseInt(words[5]);
+			System.out.println(y);
+			answer += x * y;
+			break;
+		case "divided":
+			x = Integer.parseInt(words[2]);
+			y = Integer.parseInt(words[5]);
+			answer += x / y;
+			break;
+		}
+		
+		System.out.println(answer);
+		
+		return answer;
 	}
 
 }
