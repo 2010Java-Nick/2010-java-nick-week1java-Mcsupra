@@ -1,6 +1,7 @@
 package com.revature.eval.java.core;
 
 import java.time.temporal.Temporal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +31,7 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String acronym(String phrase) {
-		String[] words = phrase.split(" ");
+		String[] words = phrase.replaceAll("^a-zA-Z", " ").split(" ");
 		String acro = "";
 		
 		for (int i = 0; i < words.length; i++) {
@@ -231,15 +232,24 @@ public class EvaluationService {
 	public Map<String, Integer> wordCount(String string) {
 		
 		String[] words = string.split(" ");
-		int[] hash = new int[words.length];
+		Map<String, Integer> hash = new HashMap<String, Integer> ();
+		
 		
 		for (int i = 0; i < words.length; i++) {
 			
-		}
+			Integer count = hash.get(words[i]);
 			
+			
+			if (count == null) {
+				hash.put(words[i], 1);
+			}
+			else
+				hash.put(words[i], count+1);
+			}
+			
+		hash.remove("");
 		
-		
-		return null;
+		return hash;
 	}
 
 	/**
@@ -318,7 +328,14 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String toPigLatin(String string) {
-		// TODO Write an implementation for this method declaration
+		
+		char[] pig = string.toCharArray();
+		
+		switch (pig[0]) {
+		case 
+		
+		}
+		
 		return null;
 	}
 
