@@ -31,12 +31,14 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String acronym(String phrase) {
-		String[] words = phrase.replaceAll("^a-zA-Z", " ").split(" ");
+		
+		String[] words = phrase.replaceAll("[^a-zA-Z ]", "").split(" ");
 		String acro = "";
 		
 		for (int i = 0; i < words.length; i++) {
 			acro += words[i].toCharArray()[0];
 		}	
+		
 		return acro;
 	}
 
@@ -200,21 +202,25 @@ public class EvaluationService {
 	public String cleanPhoneNumber(String string) {
 		int count = 0;
 		String newNum = "";
+		string =  string.replaceAll("[^0-9]", "");
 		char[] phone = string.toCharArray();
 		
-		for (int i = 0; i < string.length(); i++) {
-			if (Character.isDigit(phone[i])) {
+		if (phone.length > 10) {
+			throw new IllegalArgumentException("invalidWhenMoreThan11Digits");
+		}
+		
+		for (int i = 0; i < phone.length; i++) {
+			
 				if (count == 0 && phone[i] != '1') {
 					newNum += phone[i];
 					count++;
 				}
 				else if (count == 0 && phone[i] == '1')
 					count++;
-				else
+				else {
 					newNum += phone[i];
-					count++;		
-			}
-			
+					count++;
+				}
 		}
 		
 		return newNum;
@@ -287,12 +293,31 @@ public class EvaluationService {
 	 * binary search is a dichotomic divide and conquer search algorithm.
 	 * 
 	 */
-	static class BinarySearch<T> {
+	static class BinarySearch<T extends Comparable<T>> {
 		private List<T> sortedList;
 
 		public int indexOf(T t) {
-			// TODO Write an implementation for this method declaration
-			return 0;
+			
+			List<T> list = getSortedList();
+			int left = 0;
+			int right = list.size();
+			int middle;
+			
+			do {
+				middle = (left + right)/2;
+				
+				if (left > right)
+					break;
+				else if (list.get(middle).compareTo(t) < 0) {
+					left = middle + 1;
+				}
+				else {
+					right = middle - 1;
+				}
+				
+			}while (list.get(middle).compareTo(t)!=0);
+			
+			return middle;
 		}
 
 		public BinarySearch(List<T> sortedList) {
@@ -330,13 +355,52 @@ public class EvaluationService {
 	public String toPigLatin(String string) {
 		
 		char[] pig = string.toCharArray();
+		String temp = "";
 		
 		switch (pig[0]) {
-		case 
-		
+		case 'a': case 'e': case 'i': case 'o': case 'u':
+			string += "ay";
+			break;
+		case 's':
+			int count = 0;
+			int i=0;
+			while(pig[i]!='e'&&pig[i]!='i'&&pig[i]!='o'&&pig[i]!='u') {
+					count++;
+					i++;
+			}
+			
+			for (int j = count; j < pig.length; j++) {
+				temp += pig[j];
+			}
+			
+			string = temp;
+			
+			for (int j = 0; j < count; j++) {
+				string += pig[j];
+			}
+			string += "ay";
+			break;
+			
+		case 't':
+			if (pig[1] == 'h')
+				for (int k=2;k<pig.length;k++) {
+						temp += pig[k];
+				}
+			temp += pig[0];
+			string = temp + pig[1] + "ay";
+				
+			break;
+			
+		default:
+			for (int l = 1; l < pig.length; l++) {
+				temp += pig[l];
+			}
+			temp += pig[0] + "ay";
+			string = temp;
+			break;
 		}
 		
-		return null;
+		return string;
 	}
 
 	/**
@@ -355,8 +419,22 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isArmstrongNumber(int input) {
-		// TODO Write an implementation for this method declaration
-		return false;
+		
+		int temp = input;
+		int temp2 = input;
+		int total = 0;
+		int count = 0;
+		
+		while (temp2 != 0) {
+			while(temp != 0) {
+				temp = temp/10;
+				count++;
+			}
+			
+			total += Math.pow(temp2%10,count);
+			temp2 = temp2/10;
+		}
+		return (input == total);
 	}
 
 	/**
@@ -370,7 +448,8 @@ public class EvaluationService {
 	 * @return
 	 */
 	public List<Long> calculatePrimeFactorsOf(long l) {
-		// TODO Write an implementation for this method declaration
+		//List<long> list = new List();
+		
 		return null;
 	}
 
