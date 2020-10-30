@@ -354,52 +354,54 @@ public class EvaluationService {
 	 */
 	public String toPigLatin(String string) {
 		
-		char[] pig = string.toCharArray();
+		String[]words = string.split(" ");
 		String temp = "";
-		
-		switch (pig[0]) {
-		case 'a': case 'e': case 'i': case 'o': case 'u':
-			string += "ay";
-			break;
-		case 's':
-			int count = 0;
-			int i=0;
-			while(pig[i]!='e'&&pig[i]!='i'&&pig[i]!='o'&&pig[i]!='u') {
+		for (int m=0;m<words.length;m++) {
+			
+			char[] pig = words[m].toCharArray();
+			switch (pig[0]) {
+			case 'a': case 'e': case 'i': case 'o': case 'u':
+				string += "ay";
+				break;
+			case 's':
+				int count = 0;
+				int i=0;
+				while(pig[i]!='e'&&pig[i]!='i'&&pig[i]!='o'&&pig[i]!='u') {
 					count++;
 					i++;
-			}
+				}
 			
-			for (int j = count; j < pig.length; j++) {
-				temp += pig[j];
-			}
+				for (int j = count; j < pig.length; j++) {
+					temp += pig[j];
+				}
 			
-			string = temp;
+				string = temp;
 			
-			for (int j = 0; j < count; j++) {
+				for (int j = 0; j < count; j++) {
 				string += pig[j];
-			}
-			string += "ay";
-			break;
+				}
+				string += "ay";
+				break;
 			
-		case 't':
-			if (pig[1] == 'h')
+			case 't':
+				if (pig[1] == 'h')
 				for (int k=2;k<pig.length;k++) {
 						temp += pig[k];
 				}
-			temp += pig[0];
-			string = temp + pig[1] + "ay";
+				temp += pig[0];
+				string = temp + pig[1] + "ay";
 				
-			break;
+				break;
 			
-		default:
-			for (int l = 1; l < pig.length; l++) {
-				temp += pig[l];
+			default:
+				for (int l = 1; l < pig.length; l++) {
+					temp += pig[l];
+				}
+				temp += pig[0] + "ay";
+				string = temp;
+				break;
 			}
-			temp += pig[0] + "ay";
-			string = temp;
-			break;
 		}
-		
 		return string;
 	}
 
@@ -488,8 +490,45 @@ public class EvaluationService {
 		}
 
 		public String rotate(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+		 	
+		    if (key >= 26)
+		    {
+		        key = key % 26; //Handle "large" numbers
+		    }
+
+		    String temp = "";
+		    
+		    char[] arr = string.toCharArray();
+		    
+		    for (int i = 0; i < arr.length; i++)
+		    {
+		        
+		        if (arr[i] >= 65 && arr[i] <= 90) //Uppercase handling only
+		        {
+		            arr[i] = (char) (arr[i] + key);
+		            
+		            if (arr[i] > 90) //Check for text wrapping to keep case and in alpha
+		            {
+		                arr[i] = (char) (arr[i] - 26);
+		            }
+		        }
+		        
+		        else if (arr[i] >= 97 && arr[i] <= 122) // Check lower
+		        {
+		            arr[i] = (char) (arr[i]-32+key);
+		            
+		            if (arr[i] > 90)
+		            {
+		                arr[i] = (char) (arr[i] - 26);
+		            }
+		            
+		            arr[i] = (char) (arr[i] + 32);
+		        }
+		        
+		        temp += arr[i];
+		        
+		    }
+			return temp;
 		}
 
 	}
@@ -507,8 +546,37 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int calculateNthPrime(int i) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		
+		int prime = 2;
+		int count = 0;
+		int ticker = 0; 
+		if (i>1) {
+			do {
+				if (prime == 2) {
+					prime = 3;
+					count++;
+				}
+				else {
+					prime += 2;
+				
+					for (int j=2;j<prime-1;j++) {
+						if (prime%j == 0) {
+							ticker++;
+						}			
+					}
+					if (ticker == 0) {
+						count++;
+					}
+					else {
+						ticker=0;
+					}
+				
+				}
+				
+			}while (count != i);
+		}
+		
+		return prime;
 	}
 
 	/**
